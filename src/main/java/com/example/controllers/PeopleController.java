@@ -1,7 +1,6 @@
 package com.example.controllers;
 
 
-import com.example.DTO.LocationDTO;
 import com.example.DTO.PersonDTO;
 import com.example.models.Location;
 import com.example.models.Person;
@@ -59,23 +58,9 @@ public class PeopleController {
     @GetMapping("/{id}/locations")
     public List<Location> locationList(@PathVariable int id){
         Person person = peopleService.findOne(id);
-        System.out.println(person.getLocationList());
         return person.getLocationList();
     }
-    @PostMapping("/{id}/create")
-    public ResponseEntity<HttpStatus> createYourLocation(@PathVariable("id") int id, @RequestBody LocationDTO locationDTO){
-        Person person = peopleService.findOne(id);
-        Location location = convertToLocation(locationDTO);
-        List<Location> list = person.getLocationList();
-        list.add(location);
-        person.setLocationList(list);
-        peopleService.save(person);
-        System.out.println(person.getName() + " " + person.getLocationList());
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-    public Location convertToLocation(LocationDTO locationDTO){
-        return mapper.map(locationDTO, Location.class);
-    }
+
     private PersonDTO convertToPersonDTO(Person person){
         return mapper.map(person, PersonDTO.class);
     }

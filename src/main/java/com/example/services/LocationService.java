@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -22,5 +23,15 @@ public class LocationService {
     @Transactional
     public void save(Location location){
         locationRepository.save(location);
+    }
+
+    public List<Location> findAvailable(){
+        List<Location> locationList = locationRepository.findAll();
+        System.out.println(locationList);
+        for(int i =0 ; i < locationList.size(); i++){
+            if(locationList.get(i).getOwner() != null)
+                locationList.remove(locationList.get(i));
+        }
+        return locationList;
     }
 }

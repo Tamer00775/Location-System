@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 public class LocationDTO {
     @NotEmpty(message = "location should be not empty")
-    @Pattern(regexp = "[\\s]*[a-zA-Z0-9,\\#]+[\\s]*[a-zA-Z0-9.\\-\\,\\#]+[a-zA-Z0-9\\s.\\-\\,\\#]*$", message = "Ex: St # 123, North AVE New York. NY 12345")
+    @Pattern(regexp = "^(\\d+\\s)?(\\w+\\s)+(\\w+\\.)?\\s*\\b(\\w+)\\b[,]?\\s*(\\w{2})\\s*(\\d{5})(?:[-\\s]*(\\d{4}))?$", message = "Example: 123 Main St Anytown NY 12345 or 123 Main St., Anytown, NY 12345")
     private String location;
 
     public String getLocation() {

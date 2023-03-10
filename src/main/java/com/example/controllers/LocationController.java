@@ -1,14 +1,11 @@
 package com.example.controllers;
 
 import com.example.DTO.LocationDTO;
-import com.example.DTO.PersonDTO;
 import com.example.models.Location;
-import com.example.models.Person;
+import com.example.repository.PeopleRepository;
 import com.example.services.LocationService;
 import com.example.util.LocationErrorResponse;
 import com.example.util.LocationNotCreateException;
-import com.example.util.PersonErrorResponse;
-import com.example.util.PersonNotCreatedException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,16 +21,22 @@ import java.util.List;
 @RequestMapping("/location")
 public class LocationController {
     private final LocationService locationService;
+    private final PeopleRepository peopleRepository;
     private final ModelMapper modelMapper;
     @Autowired
-    public LocationController(LocationService locationService, ModelMapper modelMapper) {
+    public LocationController(LocationService locationService, PeopleRepository peopleRepository, ModelMapper modelMapper) {
         this.locationService = locationService;
+        this.peopleRepository = peopleRepository;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping
     public List<Location> index(){
         return locationService.findAll();
+    }
+    @GetMapping("/available")
+    public List<Location> indexAvailable(){
+        return locationService.findAvailable();
     }
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid LocationDTO locationDTO, BindingResult bindingResult){
@@ -46,6 +49,7 @@ public class LocationController {
             throw new LocationNotCreateException(errorMessage.toString());
         }
         locationService.save(convertToLocation(locationDTO));
+
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @ExceptionHandler

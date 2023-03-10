@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PeopleRepository extends JpaRepository<Person, Integer> {
-
+    public Person searchByNameStartingWith(String s);
 }
